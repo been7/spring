@@ -1,6 +1,10 @@
 <%@ page language='java' contentType='text/html; charset=utf-8' pageEncoding='utf-8'%>
 <form action='loginProc.jsp' method='post'>
-	id: <input type='text' name='id'/>
-	password: <input type='text' name='password'/>
-	<input type='submit'/>
+	ID: <input type='text' name='userId'/><br>
+	PW: <input type='text' name='pw'/><br>
+	<button type='submit'>로그인</button>
 </form>
+<%
+	String msg = request.getParameter("msg");
+	if(msg != null) out.println(msg);
+%>

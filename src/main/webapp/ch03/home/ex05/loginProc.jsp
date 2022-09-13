@@ -1,10 +1,19 @@
 <%@ page language='java' contentType='text/html; charset=utf-8' pageEncoding='utf-8'%>
 <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
-<c:redirect url='main.jsp?msg=java님, 환영합니다.'/>
 <%
-	if(id == null || id != java || password == null || password != java) {
+	String userId = request.getParameter("userId");
+	String pw = request.getParameter("pw");
+	
+	if(userId.equals("java") && pw.equals("java")) {
+		session.setAttribute("userId", userId);
 %>
-<c:redirect url='login.jsp?msg=정확한 id와 password를 입력하세요.'/>
+		<c:redirect url='main.jsp'/>
+<%
+	} else {
+%>
+		<c:redirect url='login.jsp'>
+			<c:param name='msg' value='ID와 PW를 확인해 주세요.'/>
+		</c:redirect>
 <%
 	}
 %>
