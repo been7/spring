@@ -1,7 +1,7 @@
 <%@ page language='java' contentType='text/html; charset=utf-8' pageEncoding='utf-8'%>
 <%@ page import='java.util.List, java.util.ArrayList' %>
 <%@ page import='java.util.StringTokenizer' %>
-<a href='main.html'>메인</a>
+<a href='main.html'>진열대</a>
 <%
 	List<String> cart = new ArrayList<>();
 

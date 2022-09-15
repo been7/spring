@@ -1,33 +1,34 @@
 <%@ page language='java' contentType='text/html; charset=utf-8' pageEncoding='utf-8'%>
 <%@ page import='java.util.List, java.util.ArrayList' %>
 <%@ page import='java.util.StringTokenizer' %>
-<a href='main.html'>진열대</a>
-<%
-	List<String> cart = new ArrayList<>();
-
-	StringTokenizer st = null;
-	Cookie[] cookies = request.getCookies();
+<a href='main.jsp'>진열대</a>
+<h3>장바구니</h3>
+<% //리퀘에 있는 쿠키 꺼내서 카트 준비?
+	String cart = "";
+	Cookie[] cookies = request.getCookies(); 
+	for(Cookie cookie: cookies)
+		if(cookie.getName().equals("cart")) 
+			cart = cookie.getValue();
 	
-	for(Cookie cookie: cookies) {
-		if(cookie.getName().equals("cart")) {
-			String tmp = cookie.getValue(); //tmp에 담기는 것은 노트북/마우스라는 가정
-			st = new StringTokenizer(tmp, "/"); //노트북, 마우스 이렇게 들어있다.
-			while(st.hasMoreTokens()) //토큰있는지 확인. 있으니까 true
-				cart.add(st.nextToken()); //노트북꺼내서 더하고 마우스꺼내서 더하고..다꺼내면 15번줄 false로 끝남.
-		}
-	}
-	
-	if(cart.size() > 0) { //물건이 있으면
+	if(cart != "") { //리퀘에 카트가 있으면
+		StringTokenizer products = new StringTokenizer(cart, "/"); //해당내용을 토큰으로 쪼갬
 %>
-		<ul>
-<% // <li>를 동적으로 만들기 위해 자바코드 사용.
-			for(String product: cart) {//노트북,마우스를 차례대로 꺼냄
+		<form action='cartDelProc.jsp' method='post'>
+			<ul> 
+<% //li를 동적으로 만들어야함
+				String product = ""; //물건하나 담을 변수
+				while(products.hasMoreTokens()) { //토큰 이터레이팅
+					product = products.nextToken(); //물건하나를 꺼내면 해당물건을 가지고 li 하나를 만들어야죠
 %>
-				<li><%= product %></li>
+					<li><%= product %><input type='checkbox' name='product' value='<%= product %>'/></li>
 <%
-			}
-%>		
-		</ul>
+				}
+%>									
+			</ul>
+			<button type='submit'>빼기</button>
+		</form>
 <%
-	} else out.println("물건이 없습니다.");
+		String msg = request.getParameter("msg");
+		if(msg != null) out.println(msg);
+	} else out.println("장바구니에 물건이 없습니다."); //장바구니 없는 경우도 장바구니물건없다고 통일시킴.
 %>
